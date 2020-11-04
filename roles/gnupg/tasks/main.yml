@@ -1,0 +1,8 @@
+---
+- name: Install gnupg
+  pacman:
+    name: gnupg
+    state: present
+
+- include_tasks: ./user-settings.yml
+  with_items: "{{ users }}"

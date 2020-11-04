@@ -1,0 +1,11 @@
+---
+
+- name: Push logrotate config for user logs
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/user
+  tags:
+    - user
+      
+- include_tasks: ./single-user.yml
+  with_items: "{{ users }}"

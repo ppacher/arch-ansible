@@ -1,0 +1,28 @@
+---
+- name: Configure vconsole keymap
+  lineinfile:
+    path: /etc/vconsole.conf
+    regexp: "^KEYMAP"
+    line: 'KEYMAP="de-latin1"'
+    owner: root
+    group: root
+    mode: '0644'
+    create: true
+
+- name: Configure locale.conf
+  lineinfile:
+    path: /etc/locale.conf
+    regexp: "^LANG"
+    line: 'LANG="en_US.UTF-8"'
+    owner: root
+    group: root
+    create: true
+    mode: '0644'
+
+- name: Update locale
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: '^en_US\.UTF-8'
+    line: "en_US.UTF-8"
+  notify:
+    - generate locales

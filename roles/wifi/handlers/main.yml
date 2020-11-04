@@ -1,0 +1,5 @@
+---
+- name: restart iwd
+  service:
+    name: iwd.service
+    state: restarted

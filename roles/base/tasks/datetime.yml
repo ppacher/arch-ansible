@@ -1,0 +1,15 @@
+---
+- name: Configure timezone
+  community.general.timezone:
+      name: "{{ timezone }}"
+  when: timezone is defined
+    
+- name: Enable NTP
+  command: timedatectl set-ntp true
+
+- name: Enable systemd-timesyncd
+  service: 
+    name: systemd-timesyncd.service
+    enabled: yes
+    state: started
+

@@ -1,0 +1,6 @@
+---
+- name: restart reflector update
+  service:
+    name: reflector-update.timer
+    state: restarted
+    

@@ -1,0 +1,98 @@
+---
+- set_fact: user="{{ item }}"
+- name: Create user group for {{ user.name }}
+  group:
+    name: "{{ user.group }}"
+    state: present
+  tags:
+    - user
+      
+- name: Create user and assign to group for {{ user.name }}
+  user:
+    name: "{{ user.name }}"
+    group: "{{ user.group }}"
+    password: "{{ user_password | password_hash('sha512') }}"
+    shell: "{{ user.shell }}"
+    update_password: on_create
+    uid: "{{ user.uid }}"
+    groups: uucp
+    append: yes
+  tags:
+  - user
+    
+- name: Create user log dir for {{ user.name }}
+  file:
+    path: /home/{{ user.name }}/{{ user.log.dir }}
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+  when: user.log.dir is defined
+  tags:
+    - user
+  
+- name: Add user {{ user.name }} to wheel group
+  user:
+    name: "{{ user.name }}"
+    groups: "{{ user.groups }}"
+    append: yes
+  tags:
+    - user
+
+- name: Configure passwordless sudo
+  template:
+    src: password-less-sudo.j2
+    dest: /etc/sudoers.d/{{ user.name }}
+    owner: root
+    group: root
+    mode: 0600
+  vars:
+    username: "{{ user.name }}"
+  when: user.passwordless_sudo == True
+  tags:
+    - user
+    - sudo
+
+- name: Prepare SSH directory for {{ user.name }}
+  file:
+    path: /home/{{ user.name }}/.ssh
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+  when: user.ssh_pub_keys is defined
+  tags:
+    - user
+    - ssh
+
+- name: Copy SSH public keys for {{ user.name }}
+  lineinfile:
+    dest: /home/{{ user.name }}/.ssh/authorized_keys
+    create: true
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    state: present
+    line: "{{ pubkey }}"
+  loop: "{{ user.ssh_pub_keys }}"
+  loop_control:
+    loop_var: pubkey
+  tags:
+    - user
+    - ssh
+ 
+- name: Create user socket directory for {{ user.name }}
+  file:
+    path: /run/user/{{ user.uid }}
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0700
+  tags:
+    - user
+      
+- name: Start user systemd instance for {{ user.name }}
+  service:
+    name: "user@{{ user.uid }}"
+    state: started
+  notify: stop systemd per-user instance
+  tags:
+    - user
+      

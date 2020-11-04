@@ -1,0 +1,7 @@
+[Match]
+Name={{ ifname }}
+{% if ssid is defined %}SSID={{ ssid }}
+{% endif %}
+
+[Network]
+DHCP=yes

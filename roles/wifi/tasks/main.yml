@@ -1,0 +1,41 @@
+---
+- name: Install iwd and wpa_supplicant 
+  pacman:
+    name:
+      - iwd
+      - wpa_supplicant
+    state: present
+  tags:
+    - wifi
+      
+- name: Enable iwd service
+  service:
+    name: iwd.service
+    enabled: yes
+    state: started
+      
+- name: Use DHCP for all WIFI networks
+  template:
+    src: wifi-dhcp.network.j2
+    dest: /etc/systemd/network/99-wifi-dhcp.network
+    owner: root
+    group: root
+    mode: 0644
+  vars:
+    ifname: "wl*"
+  tags:
+    - wifi
+  notify:
+    - restart networkd
+      
+- name: Configure known WIFI networks
+  template:
+    src: ssid.j2
+    dest: /var/lib/iwd/{{ item.ssid }}.{{ item.type }}
+    owner: root
+    mode: 0600
+  vars:
+    passphrase: "{{ item.passphrase }}"
+  loop: "{{ wlan.networks }}"
+  notify:
+    - restart iwd

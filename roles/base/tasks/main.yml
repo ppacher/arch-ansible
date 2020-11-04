@@ -1,0 +1,40 @@
+---
+- name: Copy pacman configuration file
+  copy:
+    src: pacman.conf
+    dest: /etc/pacman.conf
+  
+- name: Upgrade system
+  pacman: 
+    update_cache: yes
+    upgrade: yes
+
+- name: Install inetutils
+  pacman:
+    name: inetutils
+    state: present
+
+- name: Set the hostname
+  hostname:
+    name: "{{ hostname }}"
+  when: hostname is defined
+
+- name: Set kernel parameters
+  lineinfile:
+    dest: /etc/default/grub
+    state: present
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{ kernel_parameters }}"'
+  when: kernel_parameters is defined and bootloader == 'grub'
+  notify:
+    - rebuild grub
+  tags:
+    - kernelparams
+
+- import_tasks: ./locale.yml
+- import_tasks: ./datetime.yml
+- import_tasks: ./shell.yml
+- import_tasks: ./sudo.yml
+- import_tasks: ./aur_build_user.yml
+- import_tasks: ./packages.yml
+- import_tasks: ./users.yml

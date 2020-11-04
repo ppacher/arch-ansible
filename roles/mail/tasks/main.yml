@@ -1,0 +1,24 @@
+---
+- name: Install msmtp
+  pacman:
+    name: msmtp-mta
+    state: present
+  tags:
+    - msmtp
+  
+- name: MSMTP Configuration File
+  template:
+    src: msmtprc.j2
+    dest: /etc/msmtprc
+    owner: root
+    group: root
+    mode: 0600
+  when: msmtp is defined
+  tags:
+    - msmtp
+      
+#
+# TODO(ppacher): configure msmtp-queue and make sure cron/cronie uses
+# it.
+# Add systemd-user-mail from tkd-server and generalize.
+#

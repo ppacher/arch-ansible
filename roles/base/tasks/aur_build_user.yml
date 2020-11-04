@@ -1,0 +1,15 @@
+---
+- name: Create aur_builder user
+  user:
+    name: aur_builder
+    group: wheel
+    shell: /usr/sbin/nologin
+  when: aur is defined
+    
+- name: Enable passwordless pacman for aur_builder
+  lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: yes
+    validate: 'visudo -cf %s'
+  when: aur is defined

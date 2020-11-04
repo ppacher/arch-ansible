@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Upgrade system using pacman
+      pacman: 
+        update_cache: yes
+        upgrade: yes
+      when: aur is not defined
+    - name: Upgrade system using yay
+      aur:
+        use: yay
+        upgrade: yes
+      when: aur is defined

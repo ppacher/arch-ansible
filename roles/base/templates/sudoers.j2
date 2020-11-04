@@ -1,0 +1,13 @@
+## {{ ansible_managed }}
+##
+## User privilege specification
+##
+root ALL=(ALL) ALL
+
+%wheel ALL=(ALL) ALL
+{% if passwordless_sudo is defined %}
+{% for entry in passwordless_sudo %}
+%wheel ALL=(ALL) NOPASSWD:{{ entry }}
+{% endfor %}{% endif %}
+
+#includedir /etc/sudoers.d

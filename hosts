@@ -1,0 +1,2 @@
+[cluster]
+10.8.1.107 hostname=cln-lp-1 hardened=True wifi=True
