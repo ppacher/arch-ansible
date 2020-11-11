@@ -1,0 +1,9 @@
+[Unit]
+Description=Send queue mails
+
+[Timer]
+OnCalendar=*:0/15
+AccuracySec=1m
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Send queued mails
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/msmtp-queue -r

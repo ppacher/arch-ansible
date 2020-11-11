@@ -89,6 +89,30 @@
     - reload systemd config
   tags:
     - msmtp
+
+- name: Created systemd-email-user@.service.d drop-in directory
+  file:
+    path: /etc/systemd/system/systemd-email-user@.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0655
+  when: msmtp is defined
+  tags:
+    - msmtp
+
+- name: Deploy systemd-email-user@.service.d drop-ins
+  copy:
+    src: 99-failure-overwrite.conf
+    dest: /etc/systemd/system/systemd-email-user@.service.d/99-failure-overwrite.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: msmtp is defined
+  notify:
+    - reload systemd config
+  tags:
+    - msmtp
     
 - name: Created systemd service.d drop-in directory
   file:
@@ -97,6 +121,9 @@
     owner: root
     group: root
     mode: 0655
+  when: msmtp is defined
+  tags:
+    - msmtp
 
 - name: Deploy systemd service.d drop-ins
   copy:
@@ -110,3 +137,63 @@
     - reload systemd config
   tags:
     - msmtp
+    
+- name: Copy msmtp-queue service
+  copy:
+    src: msmtp-queue.service
+    dest: /etc/systemd/system/msmtp-queue.service
+    mode: 0644
+    owner: root
+    group: root
+  when: msmtp is defined
+  notify:
+    - reload systemd config
+  tags:
+    - msmtp
+    
+- name: Copy msmtp-queue timer
+  copy:
+    src: msmtp-queue.timer
+    dest: /etc/systemd/system/msmtp-queue.timer
+    mode: 0644
+    owner: root
+    group: root
+  when: msmtp is defined
+  notify:
+    - reload systemd config
+  tags:
+    - msmtp
+
+- name: Created msmtp-queue.service.d drop-in directory
+  file:
+    path: /etc/systemd/system/msmtp-queue.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0655
+  when: msmtp is defined
+  tags:
+    - msmtp
+
+- name: Deploy msmtp-queue.service.d drop-ins
+  copy:
+    src: 99-failure-overwrite.conf
+    dest: /etc/systemd/system/msmtp-queue.service.d/99-failure-overwrite.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: msmtp is defined
+  notify:
+    - reload systemd config
+  tags:
+    - msmtp
+
+- name: Enable and start msmtp-queue timer
+  service:
+    name: msmtp-queue.timer
+    enabled: yes
+    state: started
+  when: msmtp is defined
+  tags:
+    - msmtp
+  
