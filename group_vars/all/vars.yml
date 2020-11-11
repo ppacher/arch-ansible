@@ -21,6 +21,7 @@ ssh:
 aur:
   packages:
     - kitty-terminfo
+    - bitwarden-cli
         
 base_packages:
     - base-devel

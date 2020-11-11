@@ -1,14 +1,16 @@
 ---
 - name: Install docker
   pacman:
-    name: docker
+    name:
+      - docker
+      - docker-compose
     state: present
   tags:
     - docker
 
 - name: Enable docker daemon
   service:
-    name: dockerd.service
+    name: docker.service
     enabled: yes
     state: started
   tags:
