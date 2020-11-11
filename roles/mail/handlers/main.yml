@@ -1,0 +1,6 @@
+---
+- name: restart msmtp-queue.timer
+  service:
+    name: msmtp-queue.timer
+    state: restarted
+    

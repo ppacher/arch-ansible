@@ -161,6 +161,7 @@
   when: msmtp is defined
   notify:
     - reload systemd config
+    - restart msmtp-queue.timer
   tags:
     - msmtp
 
