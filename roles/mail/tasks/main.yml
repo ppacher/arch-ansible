@@ -1,7 +1,9 @@
 ---
 - name: Install msmtp
   pacman:
-    name: msmtp-mta
+    name:
+      - msmtp
+      - openbsd-netcat
     state: present
   tags:
     - msmtp
@@ -11,14 +13,100 @@
     src: msmtprc.j2
     dest: /etc/msmtprc
     owner: root
-    group: root
-    mode: 0600
+    group: mail
+    mode: 0630
   when: msmtp is defined
   tags:
     - msmtp
-      
-#
-# TODO(ppacher): configure msmtp-queue and make sure cron/cronie uses
-# it.
-# Add systemd-user-mail from tkd-server and generalize.
-#
+
+- name: Copy msmtpq script
+  copy:
+    src: /usr/share/doc/msmtp/msmtpq/msmtpq
+    remote_src: yes
+    dest: /usr/local/bin/
+    mode: 0755
+  tags:
+    - msmtp
+
+- name: Copy msmtp-queue script
+  copy:
+    src: /usr/share/doc/msmtp/msmtpq/msmtp-queue
+    remote_src: yes
+    dest: /usr/local/bin/
+    mode: 0755
+  tags:
+    - msmtp
+
+- name: Create msmtp queue directory
+  file:
+    path: /root/.msmtp.queue
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+  tags:
+    - msmtp
+
+- name: Set msmtpq log dir
+  lineinfile: 
+    dest: /usr/local/bin/msmtpq
+    regexp: ^LOG=
+    state: present
+    line: 'LOG="/var/log/msmtpq.log"'
+  when: msmtp is defined
+  tags:
+    - msmtp
+    
+- name: Create sendmail symlink
+  file:
+    src: /usr/local/bin/msmtpq
+    dest: /usr/bin/sendmail
+    state: link
+  when: msmtp is defined
+  tags:
+    - msmtp
+
+- name: Deploy systemd-email helper
+  copy:
+    src: systemd-email
+    dest: /usr/local/bin/systemd-email
+    owner: root
+    group: root
+    mode: 0555
+  when: msmtp is defined 
+  tags:
+    - msmtp
+    
+- name: Systemd-email report service
+  template:
+    src: systemd-email-user@.service.j2
+    dest: /etc/systemd/system/systemd-email-user@.service
+    owner: root
+    group: root
+    mode: 0644
+  when: msmtp is defined
+  notify:
+    - reload systemd config
+  tags:
+    - msmtp
+    
+- name: Created systemd service.d drop-in directory
+  file:
+    path: /etc/systemd/system/service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0655
+
+- name: Deploy systemd service.d drop-ins
+  copy:
+    src: 90-report-failure.conf
+    dest: /etc/systemd/system/service.d/90-report-failure.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: msmtp is defined
+  notify:
+    - reload systemd config
+  tags:
+    - msmtp

@@ -1,0 +1,15 @@
+---
+- name: Install docker
+  pacman:
+    name: docker
+    state: present
+  tags:
+    - docker
+
+- name: Enable docker daemon
+  service:
+    name: dockerd.service
+    enabled: yes
+    state: started
+  tags:
+    - docker

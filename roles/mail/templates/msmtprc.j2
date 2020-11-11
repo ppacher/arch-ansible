@@ -7,17 +7,13 @@ host 	  {{ msmtp.host }}
 user   	  {{ msmtp.user }}
 password  {{ msmtp.password }}
 
-#
-# TODO(ppacher): make the below variables
-# configurable via ansible
-#
-# Use TLS on port 465
-port 465
-tls on
-tls_starttls off
+port {{ msmtp.port }}
+tls {% if msmtp.tls %}on{% else %}off{% endif %}
+
+tls_starttls {% if msmtp.starttls %}on{% else %}off{% endif %}
 
 # Construct envelope-from addresses of the form "user@oursite.example"
-from {{ msmtp.sender }}
+from {{ msmtp.from.user }}+{{ hostname }}@{{ msmtp.from.domain }}
 
 # Syslog logging with facility LOG_MAIL instead of the default LOG_USER
 syslog LOG_MAIL
