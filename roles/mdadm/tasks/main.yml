@@ -1,0 +1,61 @@
+---
+- name: Install mdadm
+  pacman:
+    name: mdadm
+    state: present
+  tags:
+    - mdadm
+
+- name: Deploy mdadm-monitor.service
+  copy:
+    src: mdadm-monitor.service
+    dest: /etc/systemd/system/mdadm-monitor.service
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - reload systemd config
+    - restart mdadm-monitor.service
+  when: msmtp is defined and 'mail' in role_names
+  tags:
+    - mdadm
+    
+- name: Configure MAILFROM in mdadm.conf
+  lineinfile:
+    path: /etc/mdadm.conf
+    regexp: "^MAILFROM"
+    line: 'MAILFROM "mdadm <{{ msmtp.from.user }}+{{ hostname }}@{{ msmtp.from.domain }}>"'
+    owner: root
+    group: root
+    mode: '0644'
+  when: msmtp is defined and 'mail' in role_names
+  notify:
+    - restart mdadm-monitor.service
+  tags:
+    - mdadm
+
+- name: Configure MAILADDR in mdadm.conf
+  lineinfile:
+    path: /etc/mdadm.conf
+    regexp: "^MAILADDR"
+    line: 'MAILADDR {{ msmtp.reportTarget }}'
+    owner: root
+    group: root
+    mode: '0644'
+  when: msmtp is defined and 'mail' in role_names
+  notify:
+    - restart mdadm-monitor.service
+  tags:
+    - mdadm
+
+#- name: Enable and start mdadm-monitor.service
+#  service:
+#    name: mdadm-monitor.service
+#    enabled: yes
+#    state: started
+#  when: msmtp is defined
+#  tags:
+#    - mdadm
+  
+
+    

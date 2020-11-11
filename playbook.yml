@@ -10,6 +10,7 @@
     - { role: hardened, tags: ['hardened'], when: 'hardened is defined' }
     - { role: wifi, tags: ['wifi'], when: 'wifi is defined' }
     - { role: mail, tags: ['mail'], when: 'msmtp is defined' }
+    - { role: mdadm, tags: ['mdadm'] }
 
   # TODO(ppacher): remove the prompt and switch to vaults
   # for multi-user systems.

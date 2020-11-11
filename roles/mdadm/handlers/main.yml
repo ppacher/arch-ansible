@@ -1,0 +1,5 @@
+---
+- name: restart mdadm-monitor.service
+  service:
+    name: mdadm-monitor.service
+    state: restarted
