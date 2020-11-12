@@ -15,3 +15,36 @@
     state: started
   tags:
     - docker
+    
+- name: Copy docker-prune.service
+  copy:
+    src: docker-prune.service
+    dest: /etc/systemd/system/docker-prune.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+  tags:
+    - docker
+    
+- name: Copy docker-prune.timer
+  copy:
+    src: docker-prune.timer
+    dest: /etc/systemd/system/docker-prune.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+    - restart docker-prune.timer
+  tags:
+    - docker
+    
+- name: Enable and start docker-prune.timer
+  service:
+    name: docker-prune.timer
+    enabled: yes
+    state: started
+  tags:
+    - docker

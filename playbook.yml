@@ -12,6 +12,7 @@
     - { role: mail, tags: ['mail'], when: 'msmtp is defined' }
     - { role: mdadm, tags: ['mdadm'] }
     - { role: docker, tags: ['docker'] }
+    - { role: restic, tags: ['restic'] }
 
   # TODO(ppacher): remove the prompt and switch to vaults
   # for multi-user systems.

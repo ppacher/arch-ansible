@@ -1,0 +1,34 @@
+---
+- set_fact: restic="{{ item }}"
+
+- name: Create restic job file for {{ restic.name }}
+  template:
+    src: restic-backup.j2
+    dest: "/etc/restic/{{ restic.name }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload systemd config
+  tags:
+    - restic
+    
+- name: Initialize repository
+  shell: restic init
+  environment:
+    RESTIC_REPOSITORY: '{{ restic.repository }}'
+    RESTIC_PASSWORD: '{{ restic.password | default("") }}'
+    RESTIC_PASSWORD_COMMAND: '{{ restic.password_command | default("") }}'
+  #no_log: True
+  register: restic_init
+  changed_when: "'created restic backend' in restic_init.stdout"
+  failed_when:
+    - restic_init.rc != 0
+    - not 'config file already exists' in restic_init.stderr
+  when: restic.init is not defined or restic.init == True
+
+- name: Enable backup timer for {{ restic.name }}
+  service:
+    name: restic-backup@{{ restic.name }}.timer
+    enabled: yes
+    state: started

@@ -1,0 +1,50 @@
+---
+- name: Install restic
+  pacman:
+    name: restic
+    state: present
+  when: backups is defined
+  tags:
+    - restic
+  
+- name: Deploy restic-backup@.service
+  copy:
+    src: restic-backup@.service
+    dest: /etc/systemd/system/restic-backup@.service
+    mode: 0644
+    owner: root
+    group: root
+  when: backups is defined
+  notify:
+    - reload systemd config
+  tags:
+    - restic
+
+- name: Deploy restic-backup@.timer
+  copy:
+    src: restic-backup@.timer
+    dest: /etc/systemd/system/restic-backup@.timer
+    mode: 0644
+    owner: root
+    group: root
+  when: backups is defined
+  notify:
+    - reload systemd config
+    - restart restic-backup timers
+  tags:
+    - restic
+    
+- name: Create restic job directory
+  file:
+    path: /etc/restic
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  when: backups is defined
+  tags:
+    - restic
+
+- include_tasks: './configure.yml'
+  with_items: "{{ backups }}"
+  when: backups is defined

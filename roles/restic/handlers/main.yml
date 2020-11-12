@@ -1,0 +1,9 @@
+---
+- name: restart restic-backup timers
+  service:
+    name: "restic-backup@{{ item.name }}.timer"
+    state: restarted
+  loop: "{{ backups }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: backups is defined

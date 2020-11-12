@@ -1,0 +1,26 @@
+BACKUP_PATHS="{{ restic.paths }}"
+BACKUP_EXCLUDES="{% if restic.excludes is defined %}{{ restic.excludes }}{% endif %}"
+RETENTION_DAYS={% if restic.retention.days is defined %}{{ restic.retention.days }}{% else %}4
+{% endif %}
+
+RETENTION_WEEKS={% if restic.retention.weeks is defined %}{{ restic.retention.weeks }}{% else %}4
+{% endif %}
+
+RETENTION_MONTHS={% if restic.retention.months is defined %}{{ restic.retention.months }}{% else %}6
+{% endif %}
+
+RETENTION_YEARS={% if restic.retention.years is defined %}{{ restic.retention.years }}{% else %}3
+{% endif %}
+
+RESTIC_REPOSITORY={{ restic.repository }}
+{% if restic.password is defined %}
+RESTIC_PASSWORD={{restic.password}}
+{% endif %}
+
+{% if restic.password_file is defined %}
+RESTIC_PASSWORD_FILE={{ restic.password_file }}
+{% endif %}
+
+{% if restic.password_command is defined %}
+RESTIC_PASSWORD_COMMAND={{ restic.password_command }}
+{% endif %}
