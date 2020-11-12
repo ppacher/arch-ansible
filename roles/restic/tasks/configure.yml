@@ -13,6 +13,17 @@
   tags:
     - restic
     
+- name: Check password file exists
+  stat:
+    path: "{{ restic.password_file }}"
+  register: pwdfile
+  when: restic.password_file is defined
+
+- name: Fail if password file does not exit
+  fail:
+    msg: "Password file {{ restic.password_file }} does not exist"
+  when: restic.password_file is defined and not pwdfile.stat.exists
+    
 - name: Initialize repository
   shell: restic init
   environment:
