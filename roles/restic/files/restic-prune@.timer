@@ -1,0 +1,10 @@
+[Unit]
+Description= Trigger restic prune for %i
+
+[Timer]
+OnCalendar=weekly
+AccuracySec=1h
+Persistent=True
+
+[Install]
+WantedBy=multi-user.target

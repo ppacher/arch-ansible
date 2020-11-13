@@ -1,0 +1,50 @@
+---
+- include_role: 
+    name: base
+  tags:
+    - base
+    
+- include_role:
+    name: gnupg
+  tags:
+    - gnupg
+
+- include_role: 
+    name: microcode
+  when: "'GenuineIntel' in ansible_processor"
+  tags:
+    - microcode
+
+- include_role:
+    name: mirrorlist
+  tags:
+    - mirrorlist
+  
+- include_role:
+    name: ssh
+  tags:
+    - ssh
+    
+- include_role:
+    name: wifi
+  when: wifi is defined
+  tags:
+    - wifi
+    
+- include_role:
+    name: mail
+  when: msmtp is defined
+  tags:
+    - mail
+    - msmtp
+    
+- include_role:
+    name: mdadm
+  tags:
+    - mdadm
+    
+- include_role:
+    name: docker
+  tags:
+    - docker
+    

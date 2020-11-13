@@ -1,2 +1,3 @@
 [cluster]
 10.8.1.101 hostname=cln-lp-1 hardened=True wifi=True
+10.8.1.135 hostname=fs01

@@ -2,14 +2,5 @@
 - hosts: cluster
   become: yes
   roles:
-    - { role: base, tags: ['base'] }
-    - { role: gnupg, tags: ['gnupg']}
-    - { role: microcode, tags: ['microcode'], when: "'GenuineIntel' in ansible_processor" }
-    - { role: mirrorlist, tags: ['mirrorlist']}
-    - { role: ssh, tags: ['ssh'] }
-    - { role: hardened, tags: ['hardened'], when: 'hardened is defined' }
-    - { role: wifi, tags: ['wifi'], when: 'wifi is defined' }
-    - { role: mail, tags: ['mail'], when: 'msmtp is defined' }
-    - { role: mdadm, tags: ['mdadm'] }
-    - { role: docker, tags: ['docker'] }
-    - { role: restic, tags: ['restic'] }
+     - { role: common }
+     - { role: server_common }

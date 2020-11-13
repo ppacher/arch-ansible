@@ -1,0 +1,7 @@
+[Unit]
+Description= Prune restic repo from %i
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/restic/%i
+ExecStart=restic prune

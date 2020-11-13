@@ -43,3 +43,9 @@
     name: restic-backup@{{ restic.name }}.timer
     enabled: yes
     state: started
+
+- name: Enable restic prune timer for {{ restic.name }}
+  service:
+    name: restic-prune@{{ restic.name }}.timer
+    enabled: yes
+    state: started

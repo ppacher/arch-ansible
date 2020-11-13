@@ -34,6 +34,33 @@
   tags:
     - restic
     
+- name: Deploy restic-prune@.service
+  copy:
+    src: restic-prune@.service
+    dest: /etc/systemd/system/restic-prune@.service
+    owner: root
+    group: root
+    mode: 0644
+  when: backups is defined
+  notify:
+    - reload systemd config
+  tags:
+    - restic
+
+- name: Deploy restic-prune@.timer
+  copy:
+    src: restic-prune@.timer
+    dest: /etc/systemd/system/restic-prune@.timer
+    owner: root
+    group: root
+    mode: 0644
+  when: backups is defined
+  notify:
+    - reload systemd config
+    - restart restic-prune timers
+  tags:
+    - restic
+    
 - name: Create restic job directory
   file:
     path: /etc/restic

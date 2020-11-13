@@ -1,13 +1,13 @@
-backups:
-  - name: test
-    paths: "/home/paz"
-    repository: "/tmp/backup"
-    password: "test"
-    excludes: ""
-    init: True
-    retention:
-      days: 4
-      weeks: 4
-      months: 6
-      years: 3
+#backups:
+#  - name: test
+#    paths: "/home/paz"
+#    repository: "/tmp/backup"
+#    password: "test"
+#    excludes: ""
+#    init: True
+#    retention:
+#      days: 4
+#      weeks: 4
+#      months: 6
+#      years: 3
   

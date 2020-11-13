@@ -1,0 +1,11 @@
+---
+- include_role:
+    name: hardened
+  when: hardened is defined
+  tags:
+    - hardened
+
+- include_role:
+    name: restic
+  tags:
+    - restic
