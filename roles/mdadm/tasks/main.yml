@@ -48,14 +48,14 @@
   tags:
     - mdadm
 
-#- name: Enable and start mdadm-monitor.service
-#  service:
-#    name: mdadm-monitor.service
-#    enabled: yes
-#    state: started
-#  when: msmtp is defined
-#  tags:
-#    - mdadm
+- name: Enable and start mdadm-monitor.service
+  service:
+    name: mdadm-monitor.service
+    enabled: yes
+    state: started
+  when: msmtp is defined
+  tags:
+    - mdadm
   
 
     
