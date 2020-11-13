@@ -13,9 +13,3 @@
     - { role: mdadm, tags: ['mdadm'] }
     - { role: docker, tags: ['docker'] }
     - { role: restic, tags: ['restic'] }
-
-  # TODO(ppacher): remove the prompt and switch to vaults
-  # for multi-user systems.
-  vars_prompt:
-    - name: user_password
-      prompt: "Enter desired user password"
