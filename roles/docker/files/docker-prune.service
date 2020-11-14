@@ -4,4 +4,3 @@ Description= Prune dangeling and unused docker objects
 [Service]
 Type=oneshot
 ExecStart=docker system prune --filter 'until=168h' --force
-ExecStartPost=-systemctl start systemd-email-user@%n.service

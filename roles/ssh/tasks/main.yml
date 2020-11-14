@@ -27,3 +27,5 @@
   pacman:
     name: mosh
     state: present
+
+- import_tasks: ./root_ssh_config.yml

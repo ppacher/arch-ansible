@@ -1,0 +1,31 @@
+- name: Prepare SSH directory for root
+  file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+  tags:
+    - user
+    - ssh
+
+- name: Prepare SSH config directory for root
+  file:
+    path: /root/.ssh/config.d
+    state: directory
+    owner: root
+    group: root
+  tags:
+    - user
+    - ssh
+      
+- name: Prepare SSH config for root
+  lineinfile:
+    path: /root/.ssh/config
+    line: 'Include config.d/*'
+    owner: root
+    group: root
+    mode: 0600
+    create: true
+  tags:
+    - ssh
+    - user

@@ -4,6 +4,11 @@
   when: hardened is defined
   tags:
     - hardened
+    
+- include_role:
+    name: hetzner-storagebox
+  tags:
+    - hetzner-storagebox
 
 - include_role:
     name: restic

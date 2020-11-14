@@ -58,10 +58,31 @@
     state: directory
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
-  when: user.ssh_pub_keys is defined
   tags:
     - user
     - ssh
+
+- name: Prepare SSH config directory for {{ user.name }}
+  file:
+    path: /home/{{ user.name }}/.ssh/config.d
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+  tags:
+    - user
+    - ssh
+      
+- name: Prepare SSH config for {{ user.name }}
+  lineinfile:
+    path: /home/{{ user.name }}/.ssh/config
+    line: 'Include config.d/*'
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0600
+    create: true
+  tags:
+    - ssh
+    - user
 
 - name: Copy SSH public keys for {{ user.name }}
   lineinfile:
