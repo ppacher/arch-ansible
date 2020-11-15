@@ -7,5 +7,5 @@
   tags:
     - user
       
-- include_tasks: ./single-user.yml
+- include_tasks: ./configure_user.yml
   with_items: "{{ users }}"

@@ -1,0 +1,7 @@
+- name: stop systemd per-user instance
+  service:
+    name: "user@{{ item.uid }}"
+    state: stopped
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.name }}"

@@ -69,7 +69,7 @@
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
   tags:
-    - user
+    - users
     - ssh
       
 - name: Prepare SSH config for {{ user.name }}
@@ -82,7 +82,7 @@
     create: true
   tags:
     - ssh
-    - user
+    - users
 
 - name: Copy SSH public keys for {{ user.name }}
   lineinfile:
@@ -96,7 +96,7 @@
   loop_control:
     loop_var: pubkey
   tags:
-    - user
+    - users
     - ssh
  
 - name: Create user socket directory for {{ user.name }}
@@ -107,7 +107,7 @@
     group: "{{ user.group }}"
     mode: 0700
   tags:
-    - user
+    - users
       
 - name: Start user systemd instance for {{ user.name }}
   service:
@@ -115,5 +115,5 @@
     state: started
   notify: stop systemd per-user instance
   tags:
-    - user
+    - users
       
