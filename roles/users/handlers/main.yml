@@ -1,7 +1,6 @@
+---
 - name: stop systemd per-user instance
-  service:
-    name: "user@{{ item.uid }}"
-    state: stopped
-  loop: "{{ users }}"
-  loop_control:
-    label: "{{ item.name }}"
+  # TODO(ppacher): check why we need the whole path here.
+  # looks like a bug in ansible ....
+  include: roles/users/handlers/restart-systemd.yml
+  with_items: "{{ users }}"

@@ -1,5 +1,14 @@
 ---
 - set_fact: user="{{ item }}"
+
+- name: getent {{ user.name }} variables
+  getent:
+    database: passwd
+    key: "{{ user.name }}"
+    
+- set_fact:
+    uid: "{{ user.uid | default(getent_passwd[user.name][1]) }}"
+
 - name: Enable gpg-agent.socket
   systemd:
     name: gpg-agent.socket
@@ -9,7 +18,7 @@
   become: yes
   become_user: "{{ user.name }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ user.uid }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
   when: user.enable_gnupg_agent == True
   
 - name: Enable dirmngr.socket
@@ -21,7 +30,7 @@
   become: yes
   become_user: "{{ user.name }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ user.uid }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
   when: user.enable_gnupg_agent == True
 
 - name: Enable gpg-agent-ssh.socket
@@ -33,5 +42,5 @@
   become: yes
   become_user: "{{ user.name }}"
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ user.uid }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ uid }}"
   when: user.enable_gnupg_agent == True
