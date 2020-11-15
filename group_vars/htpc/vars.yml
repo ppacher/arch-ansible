@@ -1,0 +1,15 @@
+htpc:
+  user:
+    name: tv
+    uid: 1000
+    group: tv
+    groups: [ wheel ]
+    shell: /usr/bin/zsh
+    enable_gnupg_agent: False 
+    passwordless_sudo: False
+    ssh_pub_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClhpiiztkS1DS8T6DDhpyd5iuVjuQfrhWRWl0AKUDXfrKK/vVu6AohEyMwa0g8m7+Ic4EmAYJhySb8tVSoQzkUVWV9qq5cvO9EsSIy8fMqlcZiUIyQ3vR7X4uUY24AM4HdO5bvdRNgh9k92I2PSIVh3esyLt87s4J/AOgquLtdwRnw3r78D7u+2lofcYVYuke3qYFL7vFd9pKbmIDVTsy0UXjSj08M/Wvm9FvDazlqL1Oj/4p+hxfYcmA5u0f3PU4oRF2prJhkWJIc/CbFuL2cvnrV7+vZ23ROKLhbXTI76Y12QdPFZ4QFO8JlIqcWgSqlwkYhHYGpg3Ec61oRAOH7 ppc@003-0095-0086
+    log:
+      dir: log
+      rotate: 8
+      

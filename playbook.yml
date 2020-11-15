@@ -1,6 +1,30 @@
 ---
-- hosts: cluster
+- hosts: all
   become: yes
   roles:
-     - { role: common }
-     - { role: server_common }
+    - {role: base, tags: ['base']}
+    - {role: users, tags: ['users']}
+    - {role: gnupg, tags: ['gnupg']}
+    - {role: microcode, tags: ['microcode']}
+    - {role: mirrorlist, tags: ['mirrorlist']}
+    - {role: ssh, tags: ['ssh']}
+    - {role: wifi, tags: ['wifi'], when: wifi is defined}
+    - {role: mail, tags: ['mail', 'msmtp'], when: msmtp is defined}
+    - {role: mdadm, tags: ['mdadm']}
+    - {role: hardened, tags: ['hardened'], when: hardened is defined}
+
+- hosts: server
+  become: yes
+  roles:
+    - {role: hetzner-storagebox, tags: ['hetzner-storagebox']}
+    - {role: restic, tags: ['restic']}
+    
+- hosts: htpc
+  become: yes
+  tasks:
+    - include_role:
+        name: "users"
+        tasks_from: "configure_user.yml"
+      with_items:
+        - htpc.user
+      when: htpc.user is defined

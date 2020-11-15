@@ -1,7 +1,11 @@
+#hetzner:
+#  storageboxes:
+#    - u227722
+
 #backups:
 #  - name: test
 #    paths: "/home/paz"
-#    repository: "/tmp/backup"
+#    repository: sftp:u227722.your-storagebox.de:{{ hostname | default(inventory_hostname) }}
 #    password: "test"
 #    excludes: ""
 #    init: True
@@ -10,4 +14,3 @@
 #      weeks: 4
 #      months: 6
 #      years: 3
-  
