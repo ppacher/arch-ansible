@@ -1,0 +1,10 @@
+---
+- include_role:
+    name: "ssh"
+    tasks_from: "root_ssh_config.yml"
+    
+- include_tasks: ./configure.yml
+  with_items: "{{ hetzner.storageboxes }}"
+  when: hetzner.storageboxes is defined
+  tags:
+    - hetzner_storagebox
