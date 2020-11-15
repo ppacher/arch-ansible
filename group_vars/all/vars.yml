@@ -1,6 +1,5 @@
 users:
   - name: paz
-    uid: 1000
     group: paz
     groups: [ wheel ]
     shell: /usr/bin/zsh

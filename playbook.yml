@@ -16,8 +16,13 @@
 - hosts: server
   become: yes
   roles:
-    - {role: hetzner-storagebox, tags: ['hetzner-storagebox']}
-    - {role: restic, tags: ['restic']}
+    - role: hetzner-storagebox
+      when: backups is defined and hetzner is defined
+      tags: ['hetzner-storagebox']
+  
+    - role: restic
+      when: backups is defined
+      tags: ['restic']
     
 - hosts: htpc
   become: yes
@@ -25,6 +30,12 @@
     - include_role:
         name: "users"
         tasks_from: "configure_user.yml"
-      with_items:
-        - htpc.user
+      vars:
+        item: "{{ htpc.user }}"
       when: htpc.user is defined
+  roles:
+    - role: gdm-autologin
+      when: htpc.user is defined and htpc.user.autologin == True
+      vars:
+        autologin: htpc.user.autologin 
+      tags: ['gdm']

@@ -1,10 +1,10 @@
 htpc:
   user:
     name: tv
-    uid: 1000
     group: tv
     groups: [ wheel ]
     shell: /usr/bin/zsh
+    autologin: True
     enable_gnupg_agent: False 
     passwordless_sudo: False
     ssh_pub_keys:
@@ -12,4 +12,3 @@ htpc:
     log:
       dir: log
       rotate: 8
-      
