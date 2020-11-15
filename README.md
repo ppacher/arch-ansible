@@ -1,6 +1,6 @@
 # arch-ansible
 
-This repository contains a view Ansible playbooks that are meant to provision machines running [Arch Linux](https://archlinux.org). It is intended to manage **my** desktop and server systems and **will not work for you without modification!** (i.e. changing all the included ansible vaults). The playbooks and roles included in this repository have been highly inspired (and partly copied from) [Spark](https://github.com/pigmonkey/spark). Most credits should go there! If you're looking for a more complete personal-machine provisioning thing you should definitely take a look at it.
+This repository is a collection of ansible playbooks and roles that are meant to provision machines running [Arch Linux](https://archlinux.org). It is intended to manage **my** desktop and server systems and **will not work for you without modification!** (i.e. changing all the included ansible vaults). The playbooks and roles included in this repository have been highly inspired by (and partly copied from) [Spark](https://github.com/pigmonkey/spark). Most credits should go there! If you're looking for a more complete personal-machine provisioning thing you should definitely take a look at it.
 
 ## Preperation
 

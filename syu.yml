@@ -6,6 +6,7 @@
         update_cache: yes
         upgrade: yes
       when: aur is not defined
+
     - name: Upgrade system using yay
       aur:
         use: yay

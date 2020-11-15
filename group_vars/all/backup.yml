@@ -1,16 +1,16 @@
-#hetzner:
-#  storageboxes:
-#    - u227722
+hetzner:
+  storageboxes:
+    - u123456
 
-#backups:
-#  - name: test
-#    paths: "/home/paz"
-#    repository: sftp:u227722.your-storagebox.de:{{ hostname | default(inventory_hostname) }}
-#    password: "test"
-#    excludes: ""
-#    init: True
-#    retention:
-#      days: 4
-#      weeks: 4
-#      months: 6
-#      years: 3
+backups:
+  - name: test
+    paths: "/home/user"
+    repository: sftp:u123456.your-storagebox.de:{{ hostname | default(inventory_hostname) }}
+    password: "test"
+    excludes: ""
+    init: True
+    retention:
+      days: 4
+      weeks: 4
+      months: 6
+      years: 3
