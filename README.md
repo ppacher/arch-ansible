@@ -1,42 +1,26 @@
 # arch-ansible
 
-This repository is a collection of ansible playbooks and roles that are meant to provision machines running [Arch Linux](https://archlinux.org). It is intended to manage **my** desktop and server systems and **will not work for you without modification!** (i.e. changing all the included ansible vaults). The playbooks and roles included in this repository have been highly inspired by (and partly copied from) [Spark](https://github.com/pigmonkey/spark). Most credits should go there! If you're looking for a more complete personal-machine provisioning thing you should definitely take a look at it.
+This repository contains a collection of ansible roles to manage and provision **my** [Archlinux](https://archlinux.org) based desktop, server, router and embedded (mostly RPi) systems.
 
-## Preperation
+The roles distributed in this collection have been highly inspired (and partly copied) from [Spark](https://github.com/pigmonkey/spark). If you're looking for a more complete personal-machine provisioning thingy you should definitely take a look there.
 
-Install ansible and some dependencies:
+## Usage
 
-```
-pacman -S python-passlib ansible
-```
+Although the repository can be used directly it is meant to be used as an ansible collection. Please note that since this repository is designed to be used by the author it will not get published on ansible galaxy. If you have any questions or find bugs please feel free to file an issue but be prepared to fix it yourself as I might not have time to care (though, I will respond to any issues created!).
 
-Next, clone all submodules that are required by this repository:
+To use it as a collection in your playbooks, make sure to have something like the following in your local `ansible.cfg`:
 
 ```
-git submodule init && git submodule update
+[defaults]
+collections_paths = ./
 ```
 
-You should be ready to use the ansible playbooks now. See below for further instructions.
-
-## Running
-
-To install all the different roles on your inventory run the following:
+Finnally, create the required folder structure and clone the collection:
 
 ```
-ansible-playboook -i ./hosts <playbook>.yml [-t tags...]
+mkdir ansible_collections/tkd
+git clone https://github.com/ppacher/arch-ansible ./ansible_collections/tkd/common
 ```
 
-You can customize which roles and features should be managed by enabling or disabling roles or tags. Checkout the [`group_vars/`](./group_vars) and [`host_vars/`](./host_vars) directories for configuration examples.
+You can now refer to any roles defined here by using it's FQCN. That name depends on the folder structure and, in the example above, may look like `tkd.common.mirrorlist`.
 
-Available playbooks:
-
-| Name             | Description                                                   |
-|------------------|---------------------------------------------------------------|
-| **syu.yml**      | Upgrade your fleet using `pacman` or `yay`                    |
-| **playbook.yml** | Configure an archlinux box with various features and services |
-
-I plan on adding a `install.yml` playbook as well that should include most parts that I'm repeating over and over-again when boostrapping a new arch-linux box. More to come at a later point (repeating this is not too much pain right now).
-
-## License
-
-Personally I don't care; copy it, sell it, do what you want but **don't be evil** (and don't expect me to stand in, fix stuff or help you out if you broke your systems). You should also check the license of [Spark](https://github.com/pigmonkey/spark) as some roles or files are directly copied from there.
