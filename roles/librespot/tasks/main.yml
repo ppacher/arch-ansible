@@ -1,0 +1,33 @@
+---
+- name: Install librespot
+  aur:
+    name: librespot-git
+    state: present
+  become: yes
+  become_user: aur_builder
+  when: aur is defined
+  tags:
+    - librespot
+
+- name: Copy librespot.service
+  copy:
+    src: librespot@.service
+    dest: /etc/systemd/user/librespot@.service
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - librespot
+  notify:
+    - restart librespot
+    
+- name: Enable librespot for {{ librespot_user }}
+  systemd:
+    name: librespot@{{ librespot }}.service
+    scope: user
+    enabled: yes
+    state: started
+  become: yes
+  become_user: "{{ librespot_user }}"
+  tags:
+    - librespot

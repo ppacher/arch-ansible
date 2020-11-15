@@ -37,5 +37,11 @@
     - role: gdm-autologin
       when: htpc.user is defined and htpc.user.autologin == True
       vars:
-        autologin: htpc.user.autologin 
+        autologin: "{{ htpc.user.autologin }}"
       tags: ['gdm']
+
+    - role: librespot
+      when: librespot is defined and htpc.user is defined
+      tags: ['librespot']
+      vars:
+        librespot_user: "{{ htpc.user.name }}"

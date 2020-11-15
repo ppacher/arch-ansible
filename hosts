@@ -8,4 +8,4 @@
 10.8.1.103 hostname=cln-lp-1 hardened=True wifi=True
 
 [htpc]
-10.8.1.102 hostname=tvox wifi=True
+10.8.1.102 hostname=tvox wifi=True librespot=Wohnzimmer

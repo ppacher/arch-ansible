@@ -1,0 +1,9 @@
+---
+- name: restart librespot
+  systemd:
+    daemon_reload: yes
+    scope: user
+    name: librespot@{{ librespot }}.serivce
+    state: restarted
+  become: yes
+  become_user: "{{ librespot_user }}"
