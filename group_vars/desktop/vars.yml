@@ -1,0 +1,23 @@
+# Packages to install for desktop-systems. Requires the use of
+# AUR
+
+desktop_packages:
+  - xorg-server
+  - xorg-server-common
+  - xorg-setexkbmap
+  - xorg-xinit
+  - xorg-xrandr
+  - xorg-xrdb
+  - awesome-git
+  - gdm  
+
+
+graphics:
+  intel: 
+    - xf86-video-intel
+  nouveau:
+    - xf86-video-nouveau
+  nvidia:
+    - nvidia-settings
+    - nvidia
+    # TODO(ppacher): use nvidia-lts for LTS kernels

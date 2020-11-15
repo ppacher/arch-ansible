@@ -1,0 +1,39 @@
+---
+- name: Install desktop packages (yay)
+  aur:
+    use: yay
+    name: "{{ desktop_packages }}"
+    state: present
+  become: yes
+  become_user: aur_builder
+  tags:
+    - desktop
+  
+- fail:
+    msg: Invalid selection for graphics
+  when: graphic_driver is defined and graphics[graphic_driver] is not defined
+  
+- name: Install graphics
+  aur:
+    name: "{{ graphics[graphic_driver] }}"
+    state: present
+  become: yes
+  become_user: aur_builder
+  when: graphic_driver is defined
+  tags:
+    - desktop
+
+- name: Install GDM
+  pacman:
+    name: gdm
+    state: present
+  tags:
+    - desktop
+  
+- name: Enable GDM
+  systemd:
+    name: gdm.service
+    enabled: yes
+    state: started
+  tags:
+    - desktop
