@@ -4,6 +4,7 @@ users:
     groups: [ wheel ]
     shell: /usr/bin/zsh
     email: patrick.pacher@gmail.com
+    dotfiles: https://github.com/ppacher/dotfiles
     enable_gnupg_agent: True
     passwordless_sudo: True
     ssh_pub_keys:

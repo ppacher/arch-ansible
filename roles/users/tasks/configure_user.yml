@@ -98,6 +98,16 @@
   tags:
     - users
     - ssh
+
+- name: Prepare dotfiles
+  command: dotbare finit -y -s -u {{ user.dotfiles }}
+  args:
+    creates: /home/{{ user.name }}/.cfg
+  when: user.dotfiles is defined and aur is defined
+  become_user: "{{ user.name }}"
+  become: yes
+  tags:
+    - user
     
 - name: getent {{ user.name }} variables
   getent:

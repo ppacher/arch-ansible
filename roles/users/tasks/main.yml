@@ -1,5 +1,13 @@
 ---
 
+- name: Install dotbare
+  aur:
+    name: dotbare
+    state: present
+  become: yes
+  become_user: aur_builder
+  when: aur is defined
+
 - name: Push logrotate config for user logs
   template:
     src: logrotate.j2
