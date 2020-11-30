@@ -1,0 +1,25 @@
+---
+- name: Install jsondiff
+  aur:
+    name: python-jsondiff
+    state: present
+    use: yay
+  become: yes
+  become_user: aur_builder
+  when: stack is defined
+
+- name: Deploy stack {{ stack.name }}
+  template:
+    src: "{{ stack.path }}"
+    dest: /etc/stacks/{{ stack.name }}.yml
+    mode: 0644
+    owner: root
+    group: root
+  when: stack is defined
+
+- name: Deploy {{ stack.name }} from a compose file
+  community.general.docker_stack:
+    state: present
+    name: "{{ stack.name }}"
+    compose: /etc/stacks/{{ stack.name }}.yml
+  when: stack is defined
