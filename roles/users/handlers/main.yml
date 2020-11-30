@@ -1,6 +1,13 @@
 ---
 - name: stop systemd per-user instance
-  # TODO(ppacher): check why we need the whole path here.
-  # looks like a bug in ansible ....
-  include: roles/users/handlers/restart-systemd.yml
-  with_items: "{{ users }}"
+  block:
+    - name: getent {{ item.name }} variables
+      getent:
+        database: passwd
+        key: "{{ item.name }}"
+
+    - name: stop systemd for {getent_passwd[item.name][1]}}
+      service:
+        name: "user@{{ uid }}"
+        state: stopped
+      with_items: "{{ users }}"
