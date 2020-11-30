@@ -1,0 +1,59 @@
+---
+- name: Create image-builder directory
+  file:
+    path: /etc/image-builder
+    state: directory
+    mode: 0644
+    owner: root
+    group: root
+  tags:
+    - image-builder
+
+- name: Deploy image-builder@.service
+  copy:
+    src: image-builder@.service
+    dest: /etc/systemd/system/image-builder@.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+  tags:
+    - image_builder
+
+- name: Deploy image-builder@.timer
+  copy:
+    src: image-builder@.timer
+    dest: /etc/systemd/system/image-builder@.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+  tags:
+    - image_builder
+
+- name: Deploy image builder config
+  template:
+    src: image-config.j2
+    dest: /etc/image-builder/{{ item.name }}
+    owner: root
+    group: root
+    mode: 0755
+  vars:
+    image_tag: "{{ item.tag }}"
+    image_repo: "{{ item.repo }}"
+  with_items: "{{ images }}"
+  notify:
+    - reload systemd config
+  tags:
+    - image_builder
+
+- name: Enable image builder config
+  systemd:
+    name: image-builder@{{ item.name }}.timer
+    enabled: yes
+    state: started
+  with_items: "{{ images }}"
+  tags:
+    - image_builder

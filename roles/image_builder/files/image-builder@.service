@@ -1,0 +1,8 @@
+[Unit]
+Description= Build custom caddy image
+OnFailure= systemd-email-user@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/image-builder/%i
+ExecStart=/usr/bin/docker build -t $IMAGE_TAG $IMAGE_REPO
