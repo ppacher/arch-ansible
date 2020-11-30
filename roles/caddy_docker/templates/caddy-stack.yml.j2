@@ -1,0 +1,46 @@
+version: '3.7'
+
+networks:
+  default:
+    driver: overlay
+  caddy_ingress:
+    driver: overlay
+    external: true
+
+services:
+  caddy:
+    image: tkd/caddy:latest
+    command: --log stdout --agree=true --email={{ msmtp.reportTarget }}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/caddy/certs:/root/.caddy
+      - /var/logs/caddy:/caddylogs
+      - /etc/caddy/config:/caddy
+      - /var/www:/www
+    environment:
+     ACME_AGREE: "true"
+     ENABLE_TELEMETRY: "false"
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    networks:
+      - caddy_ingress
+      - default
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        delay: 10s
+        max_attempts: 5
+        window: 20s
+      update_config:
+        parallelism: 1
+        delay: 5m
+        failure_action: rollback

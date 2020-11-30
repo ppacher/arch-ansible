@@ -1,0 +1,78 @@
+---
+- name: Provide caddy image builder
+  include_role: 
+    name: image_builder
+  vars:
+    images:
+      - name: custom-caddy
+        tag: tkd/caddy
+        repo: https://github.com/tierklinik-dobersberg/custom-caddy.git
+
+  tags:
+    - image_builder
+    - caddy_docker
+
+- name: Create caddy root folder
+  file:
+    path: /etc/caddy
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create caddy config folder
+  file:
+    path: /etc/caddy/config
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create caddy cert folder
+  file:
+    path: /etc/caddy/certs
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+
+- name: Create caddy logs folder
+  file:
+    path: /var/logs/caddy
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create caddy webroot
+  file:
+    path: /var/www
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+# general.docker_network is not swarm aware so check if 
+# the network already exists and skip the next task.
+- name: Check if ingress exists
+  command: docker network inspect caddy_ingress
+  register: networkcheck
+  ignore_errors: yes
+
+- name: Create ingress network
+  community.general.docker_network:
+    name: caddy_ingress
+    scope: swarm
+    appends: yes
+    driver_options:
+      com.docker.network.bridge.name: ingress0
+  when: networkcheck.rc > 0
+
+- name: Deploy caddy stack
+  include_role:
+    name: docker
+    tasks_from: "deploy-stack.yml"
+  vars:
+    stack:
+      name: caddy
+      path: caddy-stack.yml.j2
