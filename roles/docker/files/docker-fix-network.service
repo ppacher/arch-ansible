@@ -1,0 +1,7 @@
+[Unit]
+Description=Remove local-kv.db to fix docker
+Before=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=-rm -f /var/lib/docker/network/files/local-kv.db

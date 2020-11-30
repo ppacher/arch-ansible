@@ -15,6 +15,24 @@
     state: started
   tags:
     - docker
+
+- name: Deploy docker-swarm network fix
+  copy:
+    src: docker-fix-network.service
+    dest:  /etc/systemd/system/docker-fix-network.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+  when: docker_swarm is defined and docker_swarm.network_fix == True
+
+- name: Enable docker-swarm network fix
+  systemd:
+    name: docker-fix-network.service
+    enabled: yes
+    state: started
+  when: docker_swarm is defined and docker_swarm.network_fix == True
     
 - name: Copy docker-prune.service
   copy:
