@@ -48,3 +48,21 @@
     state: started
   tags:
     - docker
+
+- name: Initialize docker swarm node
+  community.general.docker_swarm:
+    state: present
+  when: docker_swarm is defined
+  tags:
+    - docker
+
+- name: Prepare swarm stacks directory
+  file:
+    path: /etc/stacks
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  when: docker_swarm is defined
+  tags:
+    - docker
