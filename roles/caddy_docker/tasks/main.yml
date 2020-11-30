@@ -28,6 +28,14 @@
     owner: root
     group: root
 
+- name: Copy root caddy file
+  template:
+    src: Caddyfile.j2
+    dest: /etc/stacks/Caddyfile
+    mode: 0755
+    owner: root
+    group: root
+
 - name: Create caddy cert folder
   file:
     path: /etc/caddy/certs
