@@ -1,3 +1,6 @@
 ---
 - name: restart caddy
-  shell: docker service update --force caddy_caddy
+  community.general.docker_compose:
+    project_name: caddy
+    project_src: /etc/stacks/caddy
+    restarted: yes

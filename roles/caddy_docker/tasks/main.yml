@@ -30,8 +30,8 @@
 
 - name: Copy root caddy file
   template:
-    src: Caddyfile.j2
-    dest: /etc/stacks/Caddyfile
+    src: main.caddy.j2
+    dest: /etc/caddy/config/main.caddy
     mode: 0755
     owner: root
     group: root
@@ -48,7 +48,7 @@
 
 - name: Create caddy logs folder
   file:
-    path: /var/logs/caddy
+    path: /var/log/caddy
     state: directory
     mode: 0755
     owner: root
@@ -62,21 +62,13 @@
     owner: root
     group: root
 
-# general.docker_network is not swarm aware so check if 
-# the network already exists and skip the next task.
-- name: Check if ingress exists
-  command: docker network inspect caddy_ingress
-  register: networkcheck
-  ignore_errors: yes
-
 - name: Create ingress network
   community.general.docker_network:
     name: caddy_ingress
-    scope: swarm
-    appends: yes
+    scope: local
+    attachable: true
     driver_options:
       com.docker.network.bridge.name: ingress0
-  when: networkcheck.rc > 0
 
 - name: Deploy caddy stack
   include_role:
