@@ -23,6 +23,6 @@
   lineinfile:
     path: /etc/locale.gen
     regexp: '^en_US\.UTF-8'
-    line: "en_US.UTF-8"
+    line: "en_US.UTF-8 UTF-8"
   notify:
     - generate locales
