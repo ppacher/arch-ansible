@@ -16,6 +16,12 @@
   tags:
     - docker
 
+#
+# Docker swarm mode is considerably broken on ArchLinux. It does either fail
+# to start stacks on boot or failes to deploy new stacks. Both failures
+# make it unusable ...
+#
+
 - name: Deploy docker-swarm network fix
   copy:
     src: docker-fix-network.service
@@ -81,6 +87,5 @@
     mode: 0755
     owner: root
     group: root
-  when: docker_swarm is defined
   tags:
     - docker

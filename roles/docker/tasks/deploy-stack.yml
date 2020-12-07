@@ -8,18 +8,26 @@
   become_user: aur_builder
   when: stack is defined
 
+- name: Create project directory
+  file:
+    path: /etc/stacks/{{ stack.name }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: stack is defined
+
 - name: Deploy stack {{ stack.name }}
   template:
     src: "{{ stack.path }}"
-    dest: /etc/stacks/{{ stack.name }}.yml
+    dest: /etc/stacks/{{ stack.name }}/docker-compose.yml
     mode: 0644
     owner: root
     group: root
   when: stack is defined
 
 - name: Deploy {{ stack.name }} from a compose file
-  community.general.docker_stack:
-    state: present
-    name: "{{ stack.name }}"
-    compose: /etc/stacks/{{ stack.name }}.yml
+  community.general.docker_compose:
+    project_name: "{{ stack.name }}"
+    project_src: /etc/stacks/{{ stack.name }}
   when: stack is defined
