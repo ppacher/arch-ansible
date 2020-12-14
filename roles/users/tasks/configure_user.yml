@@ -99,6 +99,16 @@
     - users
     - ssh
 
+- name: Install oh-my-zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  args:
+    creates: /home/{{ user.name }}/.oh-my-zsh
+  become_user: "{{ user.name }}"
+  become: yes
+  when: user.oh_my_zsh is defined
+  tags: 
+    - user
+
 - name: Prepare dotfiles
   command: dotbare finit -y -s -u {{ user.dotfiles }}
   args:
@@ -107,6 +117,14 @@
   become_user: "{{ user.name }}"
   become: yes
   tags:
+    - user
+
+- name: Update dotfiles
+  command: dotbare pull
+  when: user.dotfiles is defined and aur is defined
+  become_user: "{{ user.name }}"
+  become: yes
+  tags: 
     - user
     
 - name: getent {{ user.name }} variables
