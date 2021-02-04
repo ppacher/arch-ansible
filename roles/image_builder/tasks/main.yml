@@ -9,6 +9,38 @@
   tags:
     - image-builder
 
+- name: Deploy image-builder-cleanup.service
+  copy:
+    src: image-builder-cleanup.service
+    dest: /etc/systemd/system/image-builder-cleanup.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+  tags:
+    - image_builder
+
+- name: Deploy image-builder-cleanup.timer
+  copy:
+    src: image-builder-cleanup.timer
+    dest: /etc/systemd/system/image-builder-cleanup.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd config
+  tags:
+    - image_builder
+
+- name: Enable image-builder-cleanup
+  systemd:
+    name: image-builder-cleanup.timer
+    enabled: yes
+    state: started
+  tags:
+    - image_builder
+
 - name: Deploy image-builder@.service
   copy:
     src: image-builder@.service

@@ -1,0 +1,7 @@
+[Unit]
+Description= Clean image-builder garbage files
+OnFailure= systemd-email-user@%n.service
+
+[Service]
+Type=oneshot
+ExecStart=-/bin/bash -c "/usr/bin/rm /tmp/docker-build-*"
