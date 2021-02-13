@@ -4,4 +4,4 @@ OnFailure= systemd-email-user@%n.service
 
 [Service]
 Type=oneshot
-ExecStart=-/bin/bash -c "/usr/bin/rm /tmp/docker-build-*"
+ExecStart=-/bin/bash -c "/usr/bin/rm -r /tmp/docker-build-*"
