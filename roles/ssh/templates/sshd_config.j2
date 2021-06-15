@@ -3,14 +3,18 @@
 Port {{ ssh.port }}
 Protocol 2
 
-PermitRootLogin no
+PermitRootLogin {{ permit_root|default("no", true) }}
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 X11Forwarding no
 PrintMotd no
 PrintLastLog yes
+
+{% if users is defined %}
 AllowUsers {% for user in users %}{{ user.name }}
 {% endfor %}
+{% endif %}
+
 LoginGraceTime 1m
 PubkeyAuthentication yes
 Subsystem	sftp	/usr/lib/ssh/sftp-server

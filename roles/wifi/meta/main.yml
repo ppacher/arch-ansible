@@ -1,4 +1,4 @@
 ---
 dependencies:
   - { role: systemd }
-  - { role: systemd-networkd }
+  - { role: systemd_networkd }

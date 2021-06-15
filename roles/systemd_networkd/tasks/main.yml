@@ -1,0 +1,13 @@
+---
+- name: Create network definitions
+  copy: 
+    dest: "/etc/systemd/network/{{ item.name }}"
+    content: "{{ item.content }}"
+  with_items: "{{ networkd_networks }}"
+  when: networkd_networks is defined
+
+- name: Enable systemd-networkd
+  service:
+    name: systemd-networkd.service
+    enabled: yes
+    state: started
