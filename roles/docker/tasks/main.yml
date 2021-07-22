@@ -16,30 +16,15 @@
   tags:
     - docker
 
-#
-# Docker swarm mode is considerably broken on ArchLinux. It does either fail
-# to start stacks on boot or failes to deploy new stacks. Both failures
-# make it unusable ...
-#
-
-- name: Deploy docker-swarm network fix
+- name: Write docker daemon.json
   copy:
-    src: docker-fix-network.service
-    dest:  /etc/systemd/system/docker-fix-network.service
+    content: "{{ docker_daemon_config | to_json }}"
+    dest: "/etc/docker/daemon.json"
     owner: root
-    group: root
-    mode: 0644
-  notify:
-    - reload systemd config
-  when: docker_swarm is defined and docker_swarm.network_fix == True
+    group: docker
+    mode: '0644'
+  when: docker_daemon_config is defined
 
-- name: Enable docker-swarm network fix
-  systemd:
-    name: docker-fix-network.service
-    enabled: yes
-    state: started
-  when: docker_swarm is defined and docker_swarm.network_fix == True
-    
 - name: Copy docker-prune.service
   copy:
     src: docker-prune.service
@@ -70,13 +55,6 @@
     name: docker-prune.timer
     enabled: yes
     state: started
-  tags:
-    - docker
-
-- name: Initialize docker swarm node
-  community.general.docker_swarm:
-    state: present
-  when: docker_swarm is defined
   tags:
     - docker
 
