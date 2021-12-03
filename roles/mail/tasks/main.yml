@@ -4,6 +4,7 @@
     name:
       - msmtp
       - openbsd-netcat
+      - s-nail
     state: present
   tags:
     - msmtp
