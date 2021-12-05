@@ -47,7 +47,7 @@
     mode: 0600
   vars:
     username: "{{ user.name }}"
-  when: user.passwordless_sudo == True
+  when: user.passwordless_sudo is defined and user.passwordless_sudo == True
   tags:
     - user
     - sudo
@@ -58,6 +58,7 @@
     state: directory
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
+  when: user.ssh_pub_keys is defined
   tags:
     - user
     - ssh
@@ -68,6 +69,7 @@
     state: directory
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
+  when: user.ssh_pub_keys is defined
   tags:
     - users
     - ssh
@@ -80,6 +82,7 @@
     group: "{{ user.group }}"
     mode: 0600
     create: true
+  when: user.ssh_pub_keys is defined
   tags:
     - ssh
     - users
@@ -92,6 +95,7 @@
     group: "{{ user.group }}"
     state: present
     line: "{{ pubkey }}"
+  when: user.ssh_pub_keys is defined
   loop: "{{ user.ssh_pub_keys }}"
   loop_control:
     loop_var: pubkey
@@ -105,7 +109,7 @@
     creates: /home/{{ user.name }}/.oh-my-zsh
   become_user: "{{ user.name }}"
   become: yes
-  when: user.oh_my_zsh is defined
+  when: user.oh_my_zsh is defined and user.oh_my_zsh == True
   tags: 
     - user
 
@@ -149,8 +153,8 @@
   service:
     name: "user@{{ uid }}"
     state: started
-  notify:
-    - stop systemd per-user instance
+#  notify:
+#    - stop systemd per-user instance
   tags:
     - users
       
