@@ -16,7 +16,6 @@
   notify:
     - reload systemd config
     - restart mdadm-monitor.service
-  when: msmtp is defined and 'mail' in role_names
   tags:
     - mdadm
     
@@ -28,7 +27,6 @@
     owner: root
     group: root
     mode: '0644'
-  when: msmtp is defined and 'mail' in role_names
   notify:
     - restart mdadm-monitor.service
   tags:
@@ -42,7 +40,6 @@
     owner: root
     group: root
     mode: '0644'
-  when: msmtp is defined and 'mail' in role_names
   notify:
     - restart mdadm-monitor.service
   tags:
@@ -53,7 +50,6 @@
     name: mdadm-monitor.service
     enabled: yes
     state: started
-  when: msmtp is defined and 'mail' in role_names
   tags:
     - mdadm
   
