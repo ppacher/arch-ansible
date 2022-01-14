@@ -3,6 +3,7 @@
   copy:
     src: pacman.conf
     dest: /etc/pacman.conf
+  when: skip_pacman_conf is not defined
   
 - name: Upgrade system
   pacman: 

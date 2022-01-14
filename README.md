@@ -24,3 +24,11 @@ git clone https://github.com/ppacher/arch-ansible ./ansible_collections/tkd/comm
 
 You can now refer to any roles defined here by using it's FQCN. That name depends on the folder structure and, in the example above, may look like `tkd.common.mirrorlist`.
 
+## Roles
+
+The following is an incomplete list of available roles in this repository. Roles are only added to this list if I found time to write at least a short documentation of the roles purpose and the supported variables
+
+#### [`librespot`](./roles/librespot)
+
+Installs and configures librespot as a systemd user service.
+

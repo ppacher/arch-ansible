@@ -1,7 +1,7 @@
 ---
 - name: Install librespot
   aur:
-    name: librespot-git
+    name: librespot-alsa-git
     state: present
   become: yes
   become_user: aur_builder
@@ -23,11 +23,12 @@
     
 - name: Enable librespot for {{ librespot_user }}
   systemd:
-    name: librespot@{{ librespot }}.service
+    name: "librespot@{{ librespot_name | default('librespot') }}.service"
     scope: user
     enabled: yes
     state: started
   become: yes
+  when: librespot_user is defined
   become_user: "{{ librespot_user }}"
   tags:
     - librespot

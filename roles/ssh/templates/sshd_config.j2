@@ -11,8 +11,7 @@ PrintMotd no
 PrintLastLog yes
 
 {% if users is defined %}
-AllowUsers {% for user in users %}{{ user.name }}
-{% endfor %}
+AllowUsers {% for user in users %}{{ user.name }} {% endfor %}
 {% endif %}
 
 LoginGraceTime 1m
