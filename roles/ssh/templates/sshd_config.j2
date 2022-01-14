@@ -19,6 +19,8 @@ LoginGraceTime 1m
 PubkeyAuthentication yes
 Subsystem	sftp	/usr/lib/ssh/sftp-server
 
+UsePAM yes
+
 # Preferred algorithms from:
 # https://wiki.mozilla.org/Security/Guidelines/OpenSSH#Modern_.28OpenSSH_6.7.2B.29
 KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
